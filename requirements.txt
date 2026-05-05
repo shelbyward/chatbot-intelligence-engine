@@ -64,3 +64,8 @@ langchain-community>=0.3.0
 chromadb>=0.6.0
 pypdf>=4.0.0
 langchain-chroma>=0.1.0
+
+# Force opentelemetry packages compatible with protobuf 4+
+# chromadb pulls in an old version (1.11.1) that breaks with protobuf 7.x
+opentelemetry-exporter-otlp-proto-grpc>=1.24.0
+opentelemetry-proto>=1.24.0
