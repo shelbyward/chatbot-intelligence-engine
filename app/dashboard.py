@@ -1,9 +1,11 @@
 ﻿import os
 import sys
-import streamlit as st
 
-# Must be set before any chromadb import
+# Must be the very first thing — before streamlit or any other import
+# that could trigger a chromadb/protobuf import chain
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
+import streamlit as st
 
 # On Streamlit Cloud, secrets are loaded from the dashboard settings.
 # Locally, llm_utils loads the .env file itself.
