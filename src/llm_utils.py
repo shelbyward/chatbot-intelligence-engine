@@ -22,6 +22,7 @@ Rules:
 - If the context does not contain enough information to answer, respond only with: "I could not find a specific answer to that in the JTR. Please consult your unit's travel office or visit travel.dod.mil."
 - Never mix a real answer with the fallback message. Use one or the other.
 - Cite dollar amounts, timeframes, and JTR section numbers when present in the context.
+- If the context contains table rows or fragments with rates or dollar amounts, extract the relevant value and include it in your answer rather than skipping it.
 
 Context:
 {context}"""
@@ -35,8 +36,9 @@ def _format_docs(docs) -> str:
 def build_qa_chain():
     vector_store = load_vector_store()
 
-    # k=5 retrieves the 5 most semantically similar JTR chunks per question
-    retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+    # k=8 retrieves the 8 most semantically similar JTR chunks per question.
+    # Raised from 5 — multi-section topics (travel orders, TLE) need more chunks to answer fully.
+    retriever = vector_store.as_retriever(search_kwargs={"k": 8})
 
     # temperature=0 makes responses deterministic — critical for regulation Q&A
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)

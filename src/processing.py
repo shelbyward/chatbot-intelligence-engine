@@ -24,7 +24,7 @@ def load_and_split_pdf(pdf_path: str):
     # one so no sentence loses context at a boundary.
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
-        chunk_overlap=150,
+        chunk_overlap=250,
         separators=["\n\n", "\n", ". ", " "],
     )
     chunks = splitter.split_documents(pages)
