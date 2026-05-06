@@ -1,8 +1,10 @@
 ﻿# JTR Chatbot — Military Travel Regulations Q&A
 
-A retrieval-augmented generation (RAG) chatbot that answers questions about military travel regulations using the Joint Travel Regulations (JTR). Built with FastAPI, LangChain, ChromaDB, and OpenAI.
+A retrieval-augmented generation (RAG) chatbot that answers questions about military travel regulations using the Joint Travel Regulations (JTR). Built with LangChain, ChromaDB, OpenAI, and Streamlit.
 
 Military members can ask plain-English questions and get grounded, cited answers pulled directly from the JTR — without reading 570 pages.
+
+**[Live Demo](https://chatbot-intelligence-engine-cqr2sy8nwhv8cwjjv4evkq.streamlit.app)**
 
 ---
 
@@ -12,6 +14,7 @@ Military members can ask plain-English questions and get grounded, cited answers
 - Every answer cites the JTR page numbers it was drawn from
 - Refuses to guess — if the answer is not in the JTR, it says so and directs to the travel office
 - Clean chat interface built with Streamlit
+- Deployed on Streamlit Community Cloud — no installation required for end users
 
 ---
 
@@ -26,6 +29,7 @@ Military members can ask plain-English questions and get grounded, cited answers
 | Backend API | FastAPI + Uvicorn |
 | Frontend | Streamlit |
 | PDF Parsing | PyPDF |
+| Hosting | Streamlit Community Cloud |
 
 ---
 
@@ -45,16 +49,30 @@ Return grounded answer with source page citations
 
 ---
 
-## Setup
+## Tips for Best Results
+
+Question phrasing affects retrieval quality. Use JTR terminology where possible:
+
+| Instead of... | Try... |
+|---|---|
+| "What needs to be in my travel order?" | "What are the required elements of a travel order?" |
+| "How much do I get for food?" | "What is the M&IE rate for TDY travel?" |
+| "Can I bring my pet?" | "Can a member be reimbursed for pet transportation during a PCS move?" |
+
+If the chatbot says it cannot find an answer, try rephrasing using more specific regulation language.
+
+---
+
+## Local Setup
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-username/chatbot-intelligence-engine.git
+git clone https://github.com/shelbyward/chatbot-intelligence-engine.git
 cd chatbot-intelligence-engine
 ```
 
 ### 2. Create and activate a virtual environment
-```bash
+```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1        # Windows
 source venv/bin/activate            # Mac/Linux
@@ -72,7 +90,6 @@ cp .env.example .env
 Open `.env` and add your OpenAI API key:
 ```
 OPENAI_API_KEY=your_key_here
-PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ```
 
 ### 5. Add the JTR PDF
@@ -113,6 +130,7 @@ chatbot-intelligence-engine/
 │   └── processing.py      # PDF ingestion and ChromaDB setup
 ├── data/
 │   └── JTR.pdf            # Source document (Joint Travel Regulations)
+├── chroma_db/             # Pre-built vector store (included for deployment)
 ├── .env.example           # Environment variable template
 └── requirements.txt       # Python dependencies
 ```
@@ -121,7 +139,9 @@ chatbot-intelligence-engine/
 
 ## Example Questions
 
+- *What are the required elements of a travel order?*
 - *What is the TLE allowance and how many days is it authorized?*
 - *Can a member be reimbursed for pet transportation during a PCS move?*
 - *How is per diem calculated for TDY travel?*
 - *What expenses are reimbursable under the JTR?*
+- *What is the mileage reimbursement rate for POV travel?*
