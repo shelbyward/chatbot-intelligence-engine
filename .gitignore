@@ -26,4 +26,3 @@ build/
 Thumbs.db
 
 # Vector DB / local data
-*.sqlite3
